@@ -4,7 +4,7 @@ pygame.init()
 
 # Skärmen
 win_WIDTH = 500
-WIN_HEIGHT = 500
+win_HEIGHT = 500
 
 win = pygame.display.set_mode((win_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("First game")
