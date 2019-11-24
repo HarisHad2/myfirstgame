@@ -10,20 +10,17 @@ win = pygame.display.set_mode((win_WIDTH, win_HEIGHT))
 pygame.display.set_caption("First game")
 
 # Variabler till min gubbe
-x = 220
-y = 480
+player_pos = [220, 480]
 width = 20
 height = 20
 vel = 10
 
 # Variabler till fienderna
 enemy_left_size = 15
-enemy_left_x = 1
-enemy_left_y = random.randrange(1, 251)
+enemy_left_pos = [1, random.randrange(1, 251)]
 
 enemy_right_size = 15
-enemy_right_x = 485
-enemy_right_y = random.randrange(1, 251)
+enemy_right_pos = [485, random.randrange(1, 251)]
 
 speed_down = 15
 speed_left = 15
@@ -41,6 +38,16 @@ run = True
 
 clock = pygame.time.Clock()
 
+def collision(player_pos, enemy_left_pos, enemy_right_pos):
+    p_x = player_pos[0]
+    p_y = player_pos[1]
+
+    e_l_x = enemy_left_pos[0]
+    e_l_y = enemy_left_pos[1]
+
+    e_r_x = enemy_right_pos[0]
+    e_r_y = enemy_right_pos[1]
+
 # Spel loopet
 while run:
     pygame.time.delay(100)
@@ -53,31 +60,35 @@ while run:
     # Kontroller
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_LEFT] and x > vel:
-        x -= vel
+    if keys[pygame.K_LEFT] and player_pos[0] > vel:
+        player_pos[0] -= vel
    
-    if keys[pygame.K_RIGHT] and x < 500 - width - vel:
-        x += vel
+    if keys[pygame.K_RIGHT] and player_pos[0] < 500 - width - vel:
+        player_pos[0] += vel
 
     win.fill((BLACK))
     # Fienders rörelse
-    if enemy_left_y >= 0 and enemy_left_y < 500:
-        enemy_left_y += speed_down
-        enemy_left_x += speed_right
+    if enemy_left_pos[1] >= 0 and enemy_left_pos[1] < 500:
+        enemy_left_pos[1] += speed_down
+        enemy_left_pos[0] += speed_right
     else:
-        enemy_left_y = random.randrange(1, 251)
-        enemy_left_x = 1
+        enemy_left_pos[1] = random.randrange(1, 251)
+        enemy_left_pos[0] = 1
     
-    if enemy_right_y <= 500 and enemy_right_y < 500:
-        enemy_right_y += speed_down
-        enemy_right_x -= speed_left
+    if enemy_right_pos[1] <= 500 and enemy_right_pos[1] < 500:
+        enemy_right_pos[1] += speed_down
+        enemy_right_pos[0] -= speed_left
     else:
-        enemy_right_y = random.randrange(1, 251)
-        enemy_right_x = 485
+        enemy_right_pos[1] = random.randrange(1, 251)
+        enemy_right_pos[0] = 485
 
-    pygame.draw.rect(win, GREEN, (enemy_right_x, enemy_right_y, enemy_right_size, enemy_right_size))
-    pygame.draw.rect(win, RED, (enemy_left_x, enemy_left_y, enemy_left_size, enemy_left_size))
-    pygame.draw.rect(win, BLUE, (x, y, width, height))
+    if collision(player_pos, enemy_left_pos, enemy_right_pos):
+        run = False
+        break
+
+    pygame.draw.rect(win, GREEN, (enemy_right_pos[0], enemy_right_pos[1], enemy_right_size, enemy_right_size))
+    pygame.draw.rect(win, RED, (enemy_left_pos[0], enemy_left_pos[1], enemy_left_size, enemy_left_size))
+    pygame.draw.rect(win, BLUE, (player_pos[0], player_pos[1], width, height))
     pygame.display.update()
 
     clock.tick(30)
