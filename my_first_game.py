@@ -6,7 +6,7 @@ pygame.init()
 win_WIDTH = 500
 win_HEIGHT = 500
 
-win = pygame.display.set_mode((win_WIDTH, WIN_HEIGHT))
+win = pygame.display.set_mode((win_WIDTH, win_HEIGHT))
 pygame.display.set_caption("First game")
 
 # Variabler till min gubbe
