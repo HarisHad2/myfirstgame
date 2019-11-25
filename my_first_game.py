@@ -38,15 +38,34 @@ run = True
 
 clock = pygame.time.Clock()
 
-def collision(player_pos, enemy_left_pos, enemy_right_pos):
+def collision_left(player_pos, enemy_left_pos):
     p_x = player_pos[0]
     p_y = player_pos[1]
 
     e_l_x = enemy_left_pos[0]
     e_l_y = enemy_left_pos[1]
 
+    if (e_l_x >= p_x and e_l_x < (p_x + width)) or (p_x >= e_l_x and p_x < (e_l_x + enemy_left_size)):
+        if (e_l_y >= p_y and e_l_y < (p_y + width)) or (p_y >= e_l_y and p_y < (e_l_y + enemy_left_size)):
+            return True
+    return False
+    
+   
+def collision_right(player_pos, enemy_right_pos):
+
+    p_x = player_pos[0]
+    p_y = player_pos[1]
+
     e_r_x = enemy_right_pos[0]
     e_r_y = enemy_right_pos[1]
+
+    if (e_r_x >= p_x and e_r_x < (p_x + width)) or (p_x >= e_r_x and p_x < (e_r_x + enemy_right_size)):
+        if (e_r_y >= p_y and e_r_y < (p_y + width)) or (p_y >= e_r_y and p_y < (e_r_y + enemy_right_size)):
+            return True
+    return False
+    
+    
+    
 
 # Spel loopet
 while run:
@@ -82,7 +101,11 @@ while run:
         enemy_right_pos[1] = random.randrange(1, 251)
         enemy_right_pos[0] = 485
 
-    if collision(player_pos, enemy_left_pos, enemy_right_pos):
+    if collision_left(player_pos, enemy_left_pos):
+        run = False
+        break
+
+    if collision_right(player_pos, enemy_right_pos):
         run = False
         break
 
